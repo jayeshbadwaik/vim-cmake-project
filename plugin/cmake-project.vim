@@ -32,8 +32,8 @@ function! s:set_options()
     endfor
 endfunction
 
+
 function! s:init()
-  if filereadable("vim-cmake-project")
     augroup vim-cmake-project.vim
       au!
       au BufNewFile,BufRead CMakeLists.txt :call s:cmake_project_activate()
@@ -41,7 +41,6 @@ function! s:init()
       au BufDelete * :call s:cmake_project_opennext()
       au VimLeavePre * :call s:cmake_project_close_output()
     augroup END
-  endif
 endfunction
 
 " Start ---------------------
@@ -72,6 +71,9 @@ endfunction
 " file do not exist and vice versa.
 function! s:cmake_project_activate()
 
+  let s:path = expand('%:p:h')
+  let s:projectfile =  s:path . "/vim-cmake-project"
+  if filereadable(s:projectfile)
     command! -nargs=0 -complete=file CMakeBuild call s:cmake_project_build()
     command! -nargs=0 -complete=file CMakeCompile call s:cmake_project_compile()
     command! -nargs=0 -bar CMakeClean call s:cmake_project_clean()
@@ -85,6 +87,7 @@ function! s:cmake_project_activate()
     if !exists("t:NERDTreeBufName") && g:cmake_project_show_bar == 1 && exists('g:loaded_nerd_tree')
         call g:NERDTreeCreator.CreateTabTree(s:cmake_project_source_directory)
     endif
+  endif
 endfunction
 
 function! s:cmake_project_warning(msg)
@@ -164,6 +167,9 @@ endfunction
 
 function! s:cmake_project_deactivate()
 
+  let s:path = expand('%:p:h')
+  let s:projectfile =  s:path . "/vim-cmake-project"
+  if filereadable(s:projectfile)
     if exists("t:NERDTreeBufName") &&
                 \ bufwinnr(t:NERDTreeBufName) != -1 &&
                 \ winnr("$") == 1 &&
@@ -180,6 +186,7 @@ function! s:cmake_project_deactivate()
     else
         call s:cmake_project_delcommands()
     endif
+  endif
 endfunction
 
 " Build project ----------
