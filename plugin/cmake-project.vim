@@ -211,9 +211,9 @@ function! s:cmake_project_compile()
         return
     endif
     if s:cmake_project_tmux_running
-        call VimuxRunCommand('make -C' .build_directory)
+        call VimuxRunCommand('make -j8 --quiet -C' .build_directory)
     else
-        exec '!make -C ' . build_directory
+        exec '!make -j8 --quiet -C ' . build_directory
     endif
 endfunction
 
