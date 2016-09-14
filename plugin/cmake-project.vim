@@ -72,7 +72,7 @@ endfunction
 function! s:cmake_project_activate()
 
   let s:path = expand('%:p:h')
-  let s:projectfile =  s:path . "/vim-cmake-project"
+  let s:projectfile =  s:path . "/.vim-cmake-project"
   if filereadable(s:projectfile)
     command! -nargs=0 -complete=file CMakeBuild call s:cmake_project_build()
     command! -nargs=0 -complete=file CMakeCompile call s:cmake_project_compile()
