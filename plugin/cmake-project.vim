@@ -192,11 +192,13 @@ endfunction
 " Build project ----------
 function! s:cmake_project_build() abort
     let build_directory = s:cmake_project_source_directory . "/" . g:cmake_project_build_directory
+    let install_directory = s:cmake_project_source_directory . "/" . g:cmake_project_install_directory
 
     if !isdirectory(build_directory)
         call mkdir(build_directory, "p")
     endif
-    let command = "cmake -G\"Unix Makefiles\" -B" . build_directory . " -H" . s:cmake_project_source_directory
+    let command = "cmake -G\"Unix Makefiles\" -B" . build_directory . " -DCMAKE_INSTALL_PREFIX=" . install_directory
+          \  . " -H" . s:cmake_project_source_directory
     if s:cmake_project_tmux_running
         call VimuxRunCommand(command)
     else
